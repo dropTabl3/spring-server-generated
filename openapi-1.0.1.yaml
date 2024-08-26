@@ -1,0 +1,150 @@
+openapi: 3.0.3
+info:
+  title: Stuends Portal
+  version: 1.0.0
+  description: sample app
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: http://localhost:8080/api/v1
+    variables: {}
+tags:
+  - name: students
+    description: CRUD students accounts
+paths:
+  /students:
+    get:
+      summary: ''
+      description: get students list
+      operationId: listStudents
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              examples:
+                mocked users:
+                  value: |2-
+                                        [
+                                            {
+                                                "id": "3b31d6d6-cc3f-4b70-83ac-15a1f9b32347",
+                                                "name": "franco"                      },
+                                            {
+                                                "id": "25fbcd84-acc4-4b89-8b9b-d7c59d029efa",
+                                                "name": "franco"                         
+                                            },
+                                            {
+                                                "id": "83a10f78-ac1e-4263-b078-32cec66f8d42",
+                                                "name": "franco"
+                                              
+                                            }
+                    ]
+        '204':
+          description: NO CONTENT
+      tags:
+        - students
+    post:
+      summary: ''
+      description: add new student
+      operationId: addStudent
+      requestBody:
+        description: Update an existent student
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Student'
+        required: true
+      responses:
+        '201':
+          description: CREATED
+        '400':
+          description: BAD REQUEST
+      tags:
+        - students
+    put:
+      summary: ''
+      description: replace student
+      operationId: replaceStudent
+      requestBody:
+        description: replace an existent student
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Student'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              examples:
+                OK:
+                  value: |-
+                    [                        {
+                                                "id": "3b31d6d6-cc3f-4b70-83ac-15a1f9b32347",
+                                                "name": "franco"
+                                            }
+                    ]
+        '404':
+          description: NOT FOUND
+      tags:
+        - students
+  /students/{id}: 
+    delete:
+      summary: ''
+      description: delete student by id
+      operationId: deleteStudentById
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: 3b31d6d6-cc3f-4b70-83ac-15a1f9b32347
+      responses:
+        '404':
+          description: NOT FOUND
+        '204':
+          description: NO CONTENT  
+      tags:
+        - students
+components:
+  schemas:
+    Student:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 3b31d6d6-cc3f-4b70-83ac-15a1f9b32347
+        username:
+          type: string
+          example: student
+      xml:
+        name: user
+  requestBodies:
+    Student:
+      description: Student object that needs to be added
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Student'
+  securitySchemes:
+    petstore_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://petstore3.swagger.io/oauth/authorize
+          scopes:
+            write:pets: modify pets in your account
+            read:pets: read your pets
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header

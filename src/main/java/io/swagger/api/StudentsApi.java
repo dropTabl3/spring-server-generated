@@ -24,11 +24,12 @@ import javax.validation.Valid;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2024-08-21T08:27:53.170218228Z[GMT]")
 @Validated
+@RequestMapping("/api/v1")
 public interface StudentsApi {
 
     @Operation(summary = "", description = "add new student", tags={ "students" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "201", description = "CREATED") })
+        @ApiResponse(responseCode = "201", description = "CREATED"), @ApiResponse(responseCode = "400", description = "BAD REQUEST") })
     @RequestMapping(value = "/students",
         consumes = { "application/json" }, 
         method = RequestMethod.POST)

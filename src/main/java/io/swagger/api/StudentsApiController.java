@@ -2,6 +2,7 @@ package io.swagger.api;
 
 import io.swagger.model.Student;
 
+import java.net.URI;
 import java.util.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,7 +40,8 @@ public class StudentsApiController implements StudentsApi {
     public ResponseEntity<?> addStudent(@Parameter(in = ParameterIn.DEFAULT, description = "Update an existent student", required=true, schema=@Schema()) @Valid @RequestBody Student body) {
         body.setId(UUID.randomUUID());
         db.add(body);
-        return new ResponseEntity(HttpStatus.CREATED);
+        URI uri = URI.create("v1/students/" + body.getId());
+        return ResponseEntity.created(uri).build();
     }
 
     public ResponseEntity<?> deleteStudentById(@Parameter(in = ParameterIn.PATH, description = "id", required=true, schema=@Schema()) @PathVariable("id") UUID id) {
